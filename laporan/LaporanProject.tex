@@ -1,0 +1,239 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{float}
+
+\geometry{margin=3cm}
+
+\title{
+\textbf{SISTEM MONITORING SUHU BOILER INDUSTRI}\\
+\vspace{1cm}
+\includegraphics[width=0.5\textwidth]{Badge_ITS.png}
+\vspace{2cm}
+}
+
+\author{
+Novia Dwi Anggraini \\
+2042251076
+\and
+Athalia Mazaya Putri Santosa \\
+2042251093
+}
+
+\date{
+Program Studi Teknik Instrumentasi\\
+Institut Teknologi Sepuluh Nopember\\
+2026
+}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+%=================================================
+
+\section{Pendahuluan}
+\subsection{Latar Belakang}
+Perkembangan teknologi instrumentasi industri menuntut adanya sistem monitoring dan kontrol yang mampu bekerja secara real-time, akurat, dan aman. Salah satu sistem penting pada industri adalah boiler industri. Boiler digunakan untuk menghasilkan uap panas yang digunakan dalam berbagai proses produksi seperti pembangkit listrik, manufaktur, pengolahan makanan, dan industri kimia.\\
+
+Suhu boiler harus dijaga agar tetap berada pada rentang operasi yang aman. Jika suhu terlalu rendah maka efisiensi sistem menurun, sedangkan suhu yang terlalu tinggi dapat menyebabkan overheating yang berpotensi merusak peralatan dan membahayakan keselamatan operator.\\
+
+Menurut penelitian mengenai monitoring boiler industri, sistem monitoring suhu dan tekanan secara real-time sangat penting untuk meningkatkan keselamatan serta efisiensi operasional boiler. Monitoring temperatur yang baik dapat membantu mendeteksi kondisi abnormal lebih awal sehingga risiko kerusakan dapat diminimalkan.\\
+
+Pada project ini dibuat sebuah console application menggunakan bahasa pemrograman Rust untuk melakukan monitoring suhu boiler industri. Sistem dapat membaca suhu boiler, menampilkan status kondisi boiler, mengaktifkan alarm ketika terjadi overheat, dan melakukan stabilisasi suhu otomatis.
+
+\subsection{Tujuan}
+Tujuan dari project ini adalah:
+\begin{enumerate}
+    \item Membuat sistem monitoring suhu boiler industri berbasis console application.
+    \item Membuat sistem kontrol suhu otomatis.
+    \item Mengimplementasikan konsep OOP menggunakan struct dan impl pada Rust.
+\end{enumerate}
+
+\subsection{Manfaat}
+Manfaat dari project ini adalah:
+\begin{enumerate}
+    \item Membantu memahami sistem monitoring industri.
+    \item Melatih implementasi algoritma dan flowchart.
+    \item Melatih penggunaan bahasa Rust dalam sistem instrumentasi.
+    \item Memahami konsep monitoring dan kontrol suhu industri.
+\end{enumerate}
+
+%=================================================
+
+\section{Studi Kasus Instrumentasi}
+
+Studi kasus pada project ini adalah sistem monitoring suhu boiler industri.\\
+
+Sistem akan:
+\begin{itemize}
+    \item Membaca nilai suhu boiler
+    \item Menampilkan status boiler
+    \item Mengaktifkan alarm jika overheat
+    \item Mengontrol suhu agar tetap stabil
+\end{itemize}
+
+Kategori sistem termasuk:
+\begin{itemize}
+    \item Sistem monitoring
+    \item Sistem kontrol otomatis
+    \item Sistem instrumentasi industri
+\end{itemize}
+
+%=================================================
+
+\section{Algoritma dan Flowchart}
+
+\subsection{Algoritma Sistem}
+
+Berikut algoritma sistem monitoring boiler:
+
+\begin{enumerate}
+    \item Membaca suhu boiler
+    \item Memeriksa kondisi suhu
+    \item Jika suhu terlalu rendah maka pembakaran ditambah
+    \item Jika suhu terlalu tinggi maka alarm dan pendingin aktif
+    \item Jika suhu normal maka sistem mempertahankan suhu
+    \item Menampilkan hasil monitoring
+    \item Sistem berjalan secara looping
+\end{enumerate}
+
+\subsection{Flowchart Sistem}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{flowchart_program.png}
+\caption{Flowchart Sistem Monitoring Boiler}
+\end{figure}
+
+%=================================================
+
+\section{Penjelasan Program Rust}
+
+Program dibuat menggunakan bahasa Rust dan dijalankan pada terminal VS Code.
+
+Fitur utama program:
+\begin{itemize}
+    \item Monitoring suhu realtime
+    \item Alarm overheat
+    \item Kontrol suhu otomatis
+    \item Simulasi pendingin boiler
+\end{itemize}
+
+Program menggunakan:
+\begin{itemize}
+    \item Percabangan
+    \item Perulangan
+    \item Fungsi
+    \item Struct dan impl
+\end{itemize}
+
+%=================================================
+
+\section{Konsep OOP}
+
+Program menggunakan konsep Object Oriented Programming (OOP) pada Rust menggunakan struct dan impl.
+
+Contoh object yang digunakan:
+\begin{itemize}
+    \item Sensor
+    \item Controller
+    \item MonitoringSystem
+\end{itemize}
+
+Contoh implementasi:
+
+\begin{verbatim}
+struct Sensor {
+    name: String,
+    value: f32,
+}
+
+impl Sensor {
+    fn display(&self) {
+        println!("Sensor: {}", self.name);
+    }
+}
+\end{verbatim}
+
+%=================================================
+
+\section{Implementasi Komputasi Numerik}
+
+Pada project ini digunakan metode Moving Average sederhana untuk menstabilkan pembacaan suhu sensor.\\
+
+Rumus Moving Average:
+
+\[
+MA = \frac{x_1 + x_2 + x_3 + ... + x_n}{n}
+\]
+
+Metode ini digunakan untuk:
+\begin{itemize}
+    \item Mengurangi noise pembacaan sensor
+    \item Menstabilkan data suhu
+    \item Membuat monitoring lebih akurat
+\end{itemize}
+
+%=================================================
+
+\section{Hasil Pengujian}
+
+Berikut hasil tampilan program saat dijalankan:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{screenshot_program.png}
+\caption{Hasil Program Monitoring Boiler}
+\end{figure}
+
+Pengujian dilakukan pada beberapa kondisi:
+\begin{itemize}
+    \item Suhu terlalu rendah (Suhu $< 150^\circ C$)
+    \item Suhu normal (150°C – 180°C)
+    \item Suhu warning (181°C – 200°C)
+    \item Suhu overheat (Suhu $> 200^\circ C$)
+\end{itemize}
+
+%=================================================
+
+\section{Analisis Hasil}
+
+Berdasarkan pengujian yang dilakukan:
+\begin{itemize}
+    \item Sistem berhasil membaca suhu boiler
+    \item Sistem dapat mendeteksi overheat
+    \item Alarm aktif saat suhu melewati batas aman
+    \item Sistem pendingin berhasil menurunkan suhu
+\end{itemize}
+
+Program telah memenuhi konsep dasar sistem monitoring dan kontrol instrumentasi industri.
+
+%=================================================
+
+\section{Kesimpulan}
+
+Sistem monitoring suhu boiler industri berhasil dibuat menggunakan bahasa Rust. \\
+
+Program mampu:
+\begin{itemize}
+    \item Memonitor suhu boiler
+    \item Menampilkan status monitoring
+    \item Mengontrol suhu secara otomatis
+    \item Mengaktifkan alarm overheat
+\end{itemize}
+
+Project ini juga telah menerapkan konsep:
+\begin{itemize}
+    \item Algoritma
+    \item Flowchart
+    \item Object Oriented Programming
+    \item Komputasi numerik
+\end{itemize}
+
+\end{document}
