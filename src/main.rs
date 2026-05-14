@@ -83,7 +83,7 @@ async fn dashboard(data: web::Data<AppState>) -> impl Responder {
     );
 
     HttpResponse::Ok()
-    .content_type("text/html; charset=UTF-8") //Tentukan charset di sini
+    .content_type("text/html; charset=UTF-8")
     .body(html)
 }
 
