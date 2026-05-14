@@ -9,3 +9,7 @@ Sistem monitoring suhu boiler industri menggunakan Rust.
 ## Flowchart Sistem
 
 ![Flowchart](docs/flowchart_program.png)
+
+## Laporan Project
+
+[Klik untuk membuka laporan PDF](laporan/LaporanProject.pdf)
