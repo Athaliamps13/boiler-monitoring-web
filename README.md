@@ -10,7 +10,6 @@ Sistem monitoring suhu boiler industri berbasis Rust yang digunakan untuk memoni
 - Alarm overheat otomatis
 - Pendinginan otomatis
 - Kontrol suhu boiler
-- Dashboard monitoring terminal
 
 ---
 
