@@ -1,172 +1,172 @@
-use actix_web::{web, App, HttpResponse, HttpServer, Responder};
-use rand::Rng;
 use std::{
-    sync::Mutex,
     thread,
     time::Duration,
 };
 
-// Data suhu boiler
-struct AppState {
-    temperature: Mutex<f32>,
-    status: Mutex<String>,
+// ======================
+// STRUCT SENSOR
+// ======================
+struct Sensor {
+    temperature: f32,
 }
 
-// Dashboard HTML
-async fn dashboard(data: web::Data<AppState>) -> impl Responder {
-    let temp = *data.temperature.lock().unwrap();
-    let status = data.status.lock().unwrap().clone();
+impl Sensor {
 
-    let color = if status == "NORMAL" {
-        "green"
-    } else if status == "WARNING" {
-        "orange"
-    } else if status == "OVERHEAT" {
-        "red"
-    } else {
-        "blue"
-    };
-
-    let html = format!(
-        r#"
-        <html>
-        <head>
-            <title>Monitoring Boiler</title>
-            <meta http-equiv="refresh" content="2">
-            <style>
-                body {{
-                    font-family: Arial;
-                    background-color: #f4f4f4;
-                    text-align: center;
-                    padding-top: 50px;
-                }}
-
-                .card {{
-                    width: 500px;
-                    margin: auto;
-                    background: white;
-                    padding: 30px;
-                    border-radius: 15px;
-                    box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
-                }}
-
-                h1 {{
-                    color: #333;
-                }}
-
-                .temp {{
-                    font-size: 60px;
-                    margin: 20px;
-                    color: #222;
-                }}
-
-                .status {{
-                    font-size: 35px;
-                    font-weight: bold;
-                    color: {};
-                }}
-            </style>
-        </head>
-
-        <body>
-            <div class="card">
-                <h1>SISTEM MONITORING SUHU BOILER</h1>
-
-                <div class="temp">{:.1} °C</div>
-
-                <div class="status">{}</div>
-            </div>
-        </body>
-        </html>
-        "#,
-        color, temp, status
-    );
-
-    HttpResponse::Ok()
-    .content_type("text/html; charset=UTF-8")
-    .body(html)
+    // Membaca suhu boiler
+    fn read_temperature(&self) -> f32 {
+        self.temperature
+    }
 }
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
+// ======================
+// STRUCT CONTROLLER
+// ======================
+struct Controller {
+    alarm: bool,
+}
 
-    let app_state = web::Data::new(AppState {
-        temperature: Mutex::new(160.0),
-        status: Mutex::new(String::from("NORMAL")),
-    });
+impl Controller {
 
-    // Clone data untuk thread monitoring
-    let monitoring_data = app_state.clone();
+    // Mengecek kondisi suhu boiler
+    fn check_temperature(&mut self, temp: f32) {
 
-    // Thread monitoring suhu
-    thread::spawn(move || {
+        println!("\n--------------------------------------");
+        println!(" SUHU BOILER : {:.1} °C", temp);
 
-        let mut rng = rand::thread_rng();
+        // Suhu terlalu rendah
+        if temp < 150.0 {
+
+            self.alarm = true;
+
+            println!(" STATUS      : SUHU TERLALU RENDAH");
+            println!(" KETERANGAN  : Boiler kurang panas");
+            println!(" SARAN       : Aktifkan sistem pemanas");
+
+            println!("\n ALARM SUHU RENDAH AKTIF !!!");
+            println!(" BEEP! BEEP!");
+
+            // Pemanas otomatis
+            if temp <= 120.0 {
+
+                println!("\n SISTEM PEMANAS DIAKTIFKAN...");
+                println!(" SUHU BERHASIL DINAIKKAN");
+            }
+        }
+
+        // Suhu normal
+        else if temp >= 150.0 && temp <= 180.0 {
+
+            self.alarm = false;
+
+            println!(" STATUS      : NORMAL");
+            println!(" KETERANGAN  : Boiler bekerja stabil");
+        }
+
+        // Warning
+        else if temp > 180.0 && temp <= 200.0 {
+
+            self.alarm = false;
+
+            println!(" STATUS      : WARNING");
+            println!(" KETERANGAN  : Suhu mendekati batas aman");
+            println!(" SARAN       : Kurangi intensitas pembakaran");
+        }
+
+        // Overheat
+        else {
+
+            self.alarm = true;
+
+            println!(" STATUS      : OVERHEAT !!!");
+            println!(" KETERANGAN  : Suhu boiler melebihi batas aman");
+            println!(" SARAN       : Aktifkan sistem pendingin");
+
+            println!("\n ALARM OVERHEAT AKTIF !!!");
+            println!(" BEEP! BEEP! BEEP!");
+
+            // Pendingin otomatis
+            if temp >= 220.0 {
+
+                println!("\n SISTEM PENDINGIN DIAKTIFKAN...");
+                println!(" SUHU BERHASIL DISTABILKAN");
+            }
+        }
+    }
+}
+
+// ======================
+// STRUCT MONITORING SYSTEM
+// ======================
+struct MonitoringSystem {
+    sensor: Sensor,
+    controller: Controller,
+}
+
+impl MonitoringSystem {
+
+    // Menjalankan sistem monitoring
+    fn run(&mut self) {
+
         let mut naik = true;
 
         loop {
-            {
-                let mut temp = monitoring_data.temperature.lock().unwrap();
-                let mut status = monitoring_data.status.lock().unwrap();
 
-                // Simulasi suhu naik/turun
-                if naik {
-                    *temp += rng.gen_range(5.0..15.0);
-                } else {
-                    *temp -= rng.gen_range(5.0..15.0);
-                }
-
-                // Overheat
-                if *temp > 200.0 {
-                    *status = String::from("OVERHEAT");
-                    println!("ALARM OVERHEAT AKTIF!");
-                }
-
-                // Warning
-                else if *temp > 180.0 {
-                    *status = String::from("WARNING");
-                }
-
-                // Suhu rendah
-                else if *temp < 150.0 {
-                    *status = String::from("SUHU TERLALU RENDAH");
-                    println!("ALARM SUHU RENDAH AKTIF!");
-                }
-
-                // Normal
-                else {
-                    *status = String::from("NORMAL");
-                }
-
-                // Pendingin otomatis
-                if *temp >= 220.0 {
-                    println!("SISTEM PENDINGIN DIAKTIFKAN");
-                    *temp = 170.0;
-                    naik = false;
-                }
-
-                // Pemanas otomatis
-                if *temp <= 120.0 {
-                    println!("SISTEM PEMANAS DIAKTIFKAN");
-                    *temp = 160.0;
-                    naik = true;
-                }
-
-                println!("Suhu Boiler: {:.1} °C | Status: {}", *temp, *status);
+            // Simulasi suhu naik dan turun
+            if naik {
+                self.sensor.temperature += 10.0;
             }
 
+            else {
+                self.sensor.temperature -= 15.0;
+            }
+
+            // Jika terlalu panas
+            if self.sensor.temperature >= 220.0 {
+                naik = false;
+            }
+
+            // Jika terlalu dingin
+            if self.sensor.temperature <= 120.0 {
+                naik = true;
+            }
+
+            // Membaca suhu sensor
+            let temp = self.sensor.read_temperature();
+
+            // Mengecek kondisi boiler
+            self.controller.check_temperature(temp);
+
+            // Delay monitoring
             thread::sleep(Duration::from_secs(2));
         }
-    });
+    }
+}
 
-    println!("Server berjalan di http://127.0.0.1:8080");
+// ======================
+// MAIN PROGRAM
+// ======================
+fn main() {
 
-    HttpServer::new(move || {
-        App::new()
-            .app_data(app_state.clone())
-            .route("/", web::get().to(dashboard))
-    })
-    .bind("127.0.0.1:8080")?
-    .run()
-    .await
+    println!("==========================================");
+    println!(" SISTEM MONITORING SUHU BOILER INDUSTRI ");
+    println!("==========================================");
+
+    // Object sensor
+    let sensor = Sensor {
+        temperature: 160.0,
+    };
+
+    // Object controller
+    let controller = Controller {
+        alarm: false,
+    };
+
+    // Object monitoring system
+    let mut system = MonitoringSystem {
+        sensor,
+        controller,
+    };
+
+    // Menjalankan sistem
+    system.run();
 }

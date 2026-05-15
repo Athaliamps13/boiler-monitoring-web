@@ -51,8 +51,10 @@ Pada project ini dibuat sebuah console application menggunakan bahasa pemrograma
 Tujuan dari project ini adalah:
 \begin{enumerate}
     \item Membuat sistem monitoring suhu boiler industri berbasis console application.
+    \item membuat sistem alarm otomatis ketika suhu boiler overheat.
     \item Membuat sistem kontrol suhu otomatis.
     \item Mengimplementasikan konsep OOP menggunakan struct dan impl pada Rust.
+    \item Mengimplementasikan metode komputasi numerik Moving Average. 
 \end{enumerate}
 
 \subsection{Manfaat}
@@ -115,7 +117,7 @@ Berikut algoritma sistem monitoring boiler:
 
 \section{Penjelasan Program Rust}
 
-Program dibuat menggunakan bahasa Rust dan dijalankan pada terminal VS Code.
+Program dibuat menggunakan bahasa Rust dan dijalankan pada terminal VS Code.\\
 
 Fitur utama program:
 \begin{itemize}
@@ -137,7 +139,7 @@ Program menggunakan:
 
 \section{Konsep OOP}
 
-Program menggunakan konsep Object Oriented Programming (OOP) pada Rust menggunakan struct dan impl.
+Program menggunakan konsep Object Oriented Programming (OOP) pada Rust menggunakan struct dan impl.\\
 
 Contoh object yang digunakan:
 \begin{itemize}
@@ -145,7 +147,7 @@ Contoh object yang digunakan:
     \item Controller
     \item MonitoringSystem
 \end{itemize}
-
+\\
 Contoh implementasi:
 
 \begin{verbatim}
@@ -160,6 +162,64 @@ impl Sensor {
     }
 }
 \end{verbatim}
+\subsection{Implementasi Struct}
+Program menggunakan konsep Object Oriented Programming (OOP) dengan memanfaatkan struct dan impl pada bahasa rust. Struct digunakan sebagai representasi object pada sistem monitoring boiler industri.\\
+
+Pada project ini terdapat tiga object utama yaitu:
+\begin{enumerate}
+    \item Sensor
+    \begin{verbatim}
+    struct Sensor{
+        temperature: f32,
+        }
+    \end{verbatim}
+    \item Controller
+    \begin{verbatim}
+    sturct Controller{
+        alarm: bool,
+        }
+    \end{verbatim}
+    \item Monitoring system
+    \begin{verbatim}
+    struct MonitoringSystem {
+        sensor: Sensor,
+        controller: Controller,
+        }
+    \end{verbatim}
+\end{enumerate}
+Dengan penggunaan struct tersebut, program menjadi lebih modular dan mudah dikembangkan.
+
+\subsection{Implementasi Impl}
+Implementasi method pada Rust dilakukan menggunakan Impl. Method digunakan untuk menjalankan proses monitoring, membaca sensor, dan mengecek kondisi boiler.\\
+Implementasi Impl pada program ini:
+\begin{enumerate}
+    \item Sensor
+    \begin{verbatim}
+    impl Sensor {
+        fn read_temperature(&self) -> f32 {
+             self.temperture
+        }
+    }
+    \end{verbatim}
+    \item Controller
+    \begin{verbatim}
+    impl Controller {
+        fn check_temperature(&mut self, temp: f32) {
+           println!("Suhu Boiler: {:.1} °C", temp);
+        }
+    }
+    \end{verbatim}
+    \item Monitoring System
+    \begin{verbatim}
+    impl MonitoringSystem {
+        fn run(&mut self) {
+            println!("Monitoring berjalan...");
+        }
+    }
+    \end{verbatim}
+\end{enumerate}
+Konsep ini menunjukkan bahwa Rust mampu menerapkan paradigma Object Oriented Programming menggunakan struct dan impl.
+
 
 %=================================================
 
@@ -205,12 +265,12 @@ Pengujian dilakukan pada beberapa kondisi:
 \section{Analisis Hasil}
 
 Berdasarkan pengujian yang dilakukan:
-\begin{itemize}
+\begin{enumerate}
     \item Sistem berhasil membaca suhu boiler
     \item Sistem dapat mendeteksi overheat
     \item Alarm aktif saat suhu melewati batas aman
     \item Sistem pendingin berhasil menurunkan suhu
-\end{itemize}
+\end{enumerate}
 
 Program telah memenuhi konsep dasar sistem monitoring dan kontrol instrumentasi industri.
 
@@ -221,12 +281,13 @@ Program telah memenuhi konsep dasar sistem monitoring dan kontrol instrumentasi 
 Sistem monitoring suhu boiler industri berhasil dibuat menggunakan bahasa Rust. \\
 
 Program mampu:
-\begin{itemize}
+\begin{enumerate}
     \item Memonitor suhu boiler
     \item Menampilkan status monitoring
     \item Mengontrol suhu secara otomatis
     \item Mengaktifkan alarm overheat
-\end{itemize}
+\end{enumerate}
+
 
 Project ini juga telah menerapkan konsep:
 \begin{itemize}
